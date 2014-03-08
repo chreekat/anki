@@ -1,0 +1,11 @@
+Usage notes:
+
+    python -m cProfile -s time benchmarks/updateRequired.py 2>/dev/null |head -n 20
+
+cProfile doesn't handle broken pipes gracefully, so piping to head causes
+some carnage. Hence redirecting stderr.
+
+
+updateReqired:
+
+    NB: I don't have a nice way to try different numbers of iterations.
