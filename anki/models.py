@@ -484,6 +484,11 @@ select id from notes where mid = ?)""" % " ".join(map),
     ##########################################################################
 
     def _updateRequired(self, m):
+        """ O(t * f) where t = number of templates and f = number of fields
+
+        Takes 33.57ms with t = f = 10, testing with N = 50, 100, and 500.
+
+        """
         if m['type'] == MODEL_CLOZE:
             # nothing to do
             return
@@ -495,6 +500,13 @@ select id from notes where mid = ?)""" % " ".join(map),
         m['req'] = req
 
     def _reqForTemplate(self, m, flds, t):
+        """ Determine which fields are required.
+
+        Tries all combinations of blank fields. Slow for users with many
+        fields or templates.
+
+        O(2f + 2) where f = number of fields
+        """
         a = []
         b = []
         for f in flds:
